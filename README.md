@@ -15,7 +15,7 @@
 
 ### Modules:
 
-#### stt:
+#### stt.py:
 - pure producer `Orthograph(lang, input_device, only_final)`
   - `produce()` -> generator that yields `(transcript, result.is_final)`
 - The TTS and STT language is set by `--lang <l>` and defaults to `cs-CZ` (`en-US` works too).
@@ -23,13 +23,14 @@
 - You can choose to get non-final transcripts as well via `--only_final False`
 - Standalone: Listens and transcribes audio to standart output
 
-#### rnnGen: 
+#### rnnGen.py: 
 - consumer/producer `RnnGen(char_rnn_ckpt_dir, sample_length, remove_prime)`
 - `produce(input)` -> generated text primed by input
   - `--remove_prime` specifies whether the input is supposed to be cut from the beginning of the result
 - The directory containing a pretrained char-rnn model is set by `--char_rnn_ckpt_dir <d>` and defaults to `charrnn/save` (which by default doesn't exist, so make sure you either provide it or specify a valid path).
+- The length of generated sequence is controlled by `--sample_length`
 
-#### tts:
+#### tts.py:
 - consumer `DummyVoice(lang)`
 - `consume(input)` -> TTS plays audio of `input` string
 - The TTS and STT language is set by `--lang <l>` and defaults to `cs-CZ` (`en-US` works too).
@@ -40,30 +41,16 @@
 - @sherjilozair[/char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow/blob/master/model.py)
 
 
+### POCs:
 
-
-### mets (Metastasis)
----
-#### Setup
-
-1. `apt-get install portaudio19-dev`
-2. `pip3 install -r requirements.txt`
-3. Make sure you have a speech engine driver installed (e.g. by `apt-get install espeak`).
-5. Run `python3 poc.py  <args>`
-
-#### Running
-
+#### poc.py
 Atm, `poc.py` consists of a loop - you may speak, and what you say is transcribed trough GC's Speech API into text, until a keyword is not recognized. At this point, the connection to GC is closed and the transcribed text (except the keyword) is forwarded to the running char-rnn language model. The generated text from the language model is spoken trough a text-to-speech interface.
-To exit the application, besides `Ctrl-C`-ing it, you can say the special killing keyword.
 
-
-#### Notes
-
-`poc.py` accepts the following optional arguments:
-* The move-on-keyword is set by `--next_key <k>` and defaults to *figaro*.
-* The directory containing a pretrained char-rnn model is set by `--char_rnn_ckpt_dir <d>` and defaults to `charrnn/save` (which by default doesn't exist, so make sure you either provide it or specify a valid path).
-* After setting the patience flag with `--patient True`, the program will wait for you to hit Enter, before making new connections to the Speech API.
-* By default, the text spoken includes the primed text (the transcription) and the generated text. To say only what has been generated, set `--say_primed False`.
+- The move-on-keyword is set by `--next_key <k>` and defaults to *figaro*. If it's `None` the RNN is run on first final transcript.
+- Run `python3 poc.py  <args>`
+- By default, the text spoken includes the primed text (the transcription) and the generated text. To say only what has been generated, set `--say_primed False`.
+- The directory containing a pretrained char-rnn model is set by `--char_rnn_ckpt_dir <d>` and defaults to `charrnn/save` (which by default doesn't exist, so make sure you either provide it or specify a valid path).
+- All `rnnGen`, `tts`, and `tts` args are also valid. 
 
 You may like to choose the keywords based on the language used.
 
