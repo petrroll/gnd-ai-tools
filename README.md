@@ -1,5 +1,3 @@
-
-
 ### Setup
 - Run `make prereq-apt` to install apt-dependencies
 - Run `make env` to setup python virtual environment / `pip3 install -r requirements.txt` to setup global 
@@ -7,13 +5,15 @@
 #### Setup STT:
 - Set authentication for Google Cloud (e.g. `export GOOGLE_APPLICATION_CREDENTIALS=<path/to/credentials.json>` or [any other possible way](https://cloud.google.com/docs/authentication/production)).
 
-
 ### Architecture
 - All modules either consume / produce data / produce data based on input.
 - Producers (STT) are python generators that yield data
 - Consumers have `Consume(data)` method that can optionally return (producer based on input e.g. charnn) 
 
 ### Modules:
+
+#### General:
+- Each module can be run as CLI application for testing.
 
 #### stt.py:
 - pure producer `Orthograph(lang, input_device, only_final)`
@@ -36,15 +36,10 @@
 - The TTS and STT language is set by `--lang <l>` and defaults to `cs-CZ` (`en-US` works too).
 - Notes: for windows `pip install pypiwin32`; for linux just `make`
 
-### Credits: 
-- [Google Speech API samples](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/speech/microphone)
-- @sherjilozair[/char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow/blob/master/model.py)
-
-
 ### POCs:
 
 #### poc.py
-Atm, `poc.py` consists of a loop - you may speak, and what you say is transcribed trough GC's Speech API into text, until a keyword is not recognized. At this point, the connection to GC is closed and the transcribed text (except the keyword) is forwarded to the running char-rnn language model. The generated text from the language model is spoken trough a text-to-speech interface.
+Atm, `poc.py` consists of a loop - you may speak, and what you say is transcribed through GC's Speech API into text, until a keyword is not recognized. At this point, the connection to GC is closed and the transcribed text (except the keyword) is forwarded to the running char-rnn language model. The generated text from the language model is spoken through a text-to-speech interface.
 
 - The move-on-keyword is set by `--next_key <k>` and defaults to *figaro*. If it's `None` the RNN is run on first final transcript.
 - Run `python3 poc.py  <args>`
@@ -55,3 +50,9 @@ Atm, `poc.py` consists of a loop - you may speak, and what you say is transcribe
 You may like to choose the keywords based on the language used.
 
 Make sure, that the speech transcriptions are in a character set, which belongs to the char-rnn model's vocabulary.
+
+### Credits: 
+- [Google Speech API samples](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/speech/microphone)
+- @sherjilozair[/char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow/blob/master/model.py)
+
+
