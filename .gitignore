@@ -1,0 +1,7 @@
+__pycache__
+charrnn/__pycache__
+charrnn/save
+prereq-apt
+.vscode
+*.json
+env/
