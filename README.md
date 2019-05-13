@@ -51,6 +51,28 @@ You may like to choose the keywords based on the language used.
 
 Make sure, that the speech transcriptions are in a character set, which belongs to the char-rnn model's vocabulary.
 
+#### poc_socketTTS.py:
+- PoC listening on socket (see `SocketReader.py` args) and sending messages to `tts.py` service (see its args). 
+- Showcase of how to use modules & socketWrappers together. 
+
+### Wrappers:
+
+####: SocketReader.py
+- Producer `SocketReader(host, port, sep)`
+- `produce()` -> yields messages converted to UTF-8 string read from socket one by one, blocks until it gets a full message that ends by separator
+- `--host`: host for socket server, keep empty
+- `--port`: port for socket server
+- `--sep`: separator of messages 
+- Notes: Acts as socket server
+
+####: SocketWriter.py
+- Consumer `SocketWriter(host, port, sep)`
+- `consume(msg)` -> sends msg through socket as UTF-8 encoded string suffixed by separator
+- `--host`: host of socket to connect to
+- `--port`: port for socket server
+- `--sep`: separator of messages 
+- Notes: Acts as socket client
+
 ### Credits: 
 - [Google Speech API samples](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/speech/microphone)
 - @sherjilozair[/char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow/blob/master/model.py)
