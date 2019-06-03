@@ -33,7 +33,18 @@
 - Consumer `DummyVoice(lang)`
 - `consume(input)` -> TTS plays audio of `input` string.
 - `--lang <l>`: sets TTS language, defaults to  to `cs-CZ` (`en-US` works too).
+- `--exit_key <k>`: exit-keyword, defaults to *ananas* (only for CLI testing).
 - Notes: for windows `pip install pypiwin32`; for linux just `make` (or see what it installs).
+
+#### ttsTacotron.py:
+- Consumer `TacotronVoice()`
+- `consume(input)` -> Tacotron-2 plays audio of `input` string.
+- `--exit_key <k>`: exit-keyword, defaults to *ananas* (only for CLI testing).
+- Some/most [Tacotron-2](./Tacotron-2/README.md) params work.
+- Prerequisites: 
+  - Install all [Tacotron-2 requirements](./Tacotron-2/README.md#how-to-start)
+  - Copy trained model checkpoints to `./Tacotron-2/logs-Tacotron/`
+- Notes: First TTS takes significantly longer to generate (pre-heating with empty string causes most models to generate hell-noise).
 
 ### Wrappers:
 
