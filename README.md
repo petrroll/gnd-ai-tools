@@ -1,4 +1,9 @@
-### Setup
+### About:
+Set of AI/ML tools for @gnd's theatre performances, mostly in NLP/Speech domain. 
+
+**Remarks**: Most of it is very hacky, not fault tolerant, badly architectured, and potentially not cross-platform. Use with caution.
+
+### Setup:
 - Run `make prereq-apt` to install apt-dependencies
 - Run `make env` to setup python virtual environment / `pip3 install -r requirements.txt` to setup global 
 
